@@ -12,8 +12,10 @@ namespace ToDo.ViewModels
 {
     public class ItemViewModel :BaseViewModel
     {
-        private ToDo.Repositories.TodoItemRepository _repository;
+        private readonly TodoItemRepository _repository;
+
         public TodoItem Item { get; set; }
+        
         public ItemViewModel(TodoItemRepository repository)
         {
             _repository = repository;
@@ -23,8 +25,8 @@ namespace ToDo.ViewModels
 
         public ICommand Save => new Command(async () =>
         {
-            await _repository.AddOrUpdate(Item);
-            await Navigation.PopAsync();
+            await _repository.AddOrUpdateAsync(Item).ConfigureAwait(false);
+            await Navigation.PopAsync().ConfigureAwait(false);
         });
     }
 }

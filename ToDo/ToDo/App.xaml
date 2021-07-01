@@ -7,8 +7,19 @@
              x:Class="ToDo.App">
     <Application.Resources>
         <ResourceDictionary>
+           
             <Color x:Key="CompletedColor">#1C8859</Color>
             <Color x:Key="ActiveColor">#D3D3D3</Color>
+
+            <Color x:Key="ItemBackgroundColor">#191932</Color>
+            <Color x:Key="DarkBackgroundColor">#0101E</Color>
+            <Color x:Key="LightBlueColor">#565BFF</Color>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightBlueColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -11,7 +11,7 @@ namespace ToDo.ViewModels
         public TodoItemViewModel(TodoItem item) => Item = item;
 
         public event EventHandler ItemStatusChanged;
-        public TodoItem Item { get; private set; }
+        public TodoItem Item { get;  set; }
 
         /// <summary>
         ///  command to toggle the status of the item and a piece of text that describes the status

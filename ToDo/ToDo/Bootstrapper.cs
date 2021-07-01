@@ -38,7 +38,6 @@ namespace ToDo
             var container = ContainerBuilder.Build();
             Resolver.Initialize(container);
         }
-
    
     }
 }

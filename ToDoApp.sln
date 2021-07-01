@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Android", "ToDo\ToDo.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.iOS", "ToDo\ToDo.iOS\ToDo.iOS.csproj", "{A2F050DE-72BB-49FF-84BF-76B4259C29CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo", "ToDo\ToDo\ToDo.csproj", "{9639C746-4C15-48B3-BF97-AF6278050509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo", "ToDo\ToDo\ToDo.csproj", "{9639C746-4C15-48B3-BF97-AF6278050509}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,8 +28,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|Any CPU.Build.0 = Debug|x86
-		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|ARM.ActiveCfg = Debug|ARM
 		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|ARM.Build.0 = Debug|ARM
 		{1E4A1CDE-6AE8-4897-BD06-F604A98BA890}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -100,8 +98,6 @@ Global
 		{C5BBAA71-0008-4A7F-8241-F66B6F552401}.Release|x86.Build.0 = Release|Any CPU
 		{C5BBAA71-0008-4A7F-8241-F66B6F552401}.Release|x86.Deploy.0 = Release|Any CPU
 		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|Any CPU.ActiveCfg = Debug|iPhone
-		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|Any CPU.Build.0 = Debug|iPhone
-		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|Any CPU.Deploy.0 = Debug|iPhone
 		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|ARM.ActiveCfg = Debug|iPhone
 		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|ARM.Build.0 = Debug|iPhone
 		{A2F050DE-72BB-49FF-84BF-76B4259C29CC}.Debug|ARM.Deploy.0 = Debug|iPhone

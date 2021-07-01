@@ -10,7 +10,7 @@ namespace ToDo.Droid
     {
         public static void Init()
         {
-            var instance = new Bootstrapper();
+            _ = new Bootstrapper();
         }
     }
 }

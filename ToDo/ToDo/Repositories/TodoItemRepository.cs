@@ -2,22 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ToDo.Models;
 
 namespace ToDo.Repositories
 {
-    public class TodoItemRepository
+    public class TodoItemRepository:ITodoItemRepository
     {
 
         private SQLiteAsyncConnection _connection;
 
         public event EventHandler<TodoItem> OnItemAdded;
         public event EventHandler<TodoItem> OnItemUpdated;
+        public event EventHandler<TodoItem> OnItemDelete;
 
-        private async Task CreateConnection()
+        private async Task CreateConnectionAsync()
         {
             if (_connection != null)
                 return;
@@ -25,47 +24,58 @@ namespace ToDo.Repositories
             var databasePath = Path.Combine(documentPath, "TodoItems.sqlite");
 
             _connection = new SQLiteAsyncConnection(databasePath);
-            await _connection.CreateTableAsync<TodoItem>();
+            await _connection.CreateTableAsync<TodoItem>().ConfigureAwait(false);
 
-            if (await _connection.Table<TodoItem>().CountAsync() == 0)
+            if (await _connection.Table<TodoItem>().CountAsync().ConfigureAwait(false) == 0)
             {
                 await _connection.InsertAsync(new TodoItem()
                 {
-                    Title = "Welcome to DoToo"
-                });
+                    Title = "Welcome to Will Do"
+                }).ConfigureAwait(false);
             }
         }
-        public async Task AddItem(TodoItem item)
+        public async Task AddItemAsync(TodoItem item)
         {
-            await CreateConnection();
-            await _connection.InsertAsync(item);
+            await CreateConnectionAsync().ConfigureAwait(false);
+            
+            await _connection.InsertAsync(item).ConfigureAwait(false);
+            
             OnItemAdded?.Invoke(this, item);
         }
 
-        public async Task AddOrUpdate(TodoItem item)
+        public async Task AddOrUpdateAsync(TodoItem item)
         {
             if (item.Id == 0)
-            {
-                await AddItem(item);
-            }
+                await AddItemAsync(item).ConfigureAwait(false);
             else
-            {
-                await UpdateItem(item);
-            }
+                await UpdateItemAsync(item).ConfigureAwait(false);
         }
 
-        public async Task<List<TodoItem>> GetItems()
+        public async Task<List<TodoItem>> GetItemsAsync()
         {
-            await CreateConnection();
-            return await _connection.Table<TodoItem>().ToListAsync();
+            await CreateConnectionAsync().ConfigureAwait(false);
+            
+            return await _connection.Table<TodoItem>().ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task UpdateItem(TodoItem item)
+        public async Task UpdateItemAsync(TodoItem item)
         {
-            await CreateConnection();
-            await _connection.UpdateAsync(item);
+            await CreateConnectionAsync().ConfigureAwait(false);
+           
+            await _connection.UpdateAsync(item).ConfigureAwait(false);
+            
             OnItemUpdated?.Invoke(this, item);
         }
 
+        public async Task DeleteAsync(int id)
+        {
+             await CreateConnectionAsync().ConfigureAwait(false);
+
+            var item = await _connection.GetAsync<TodoItem>(id).ConfigureAwait(false);
+            
+            await _connection.DeleteAsync<TodoItem>(item).ConfigureAwait(false);
+            
+            OnItemDelete?.Invoke(this, item);
+        }
     }
 }

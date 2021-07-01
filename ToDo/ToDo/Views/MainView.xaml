@@ -5,28 +5,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:converters="clr-namespace:ToDo.Converters"
-             xmlns:local="clr-namespace:ToDo"
+             xmlns:local="clr-namespace:ToDo" 
+             xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="ToDo.Views.MainView"
              Title="To Do!">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:StatusColorConverter x:Key="statusColorConvert"/>
+            <converters:StatusColorConverter x:Key="statusColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddItem}"/>
     </ContentPage.ToolbarItems>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Text="{Binding FilterText,StringFormat='{Filter: {0}'}"
+        <Button Text="{Binding FilterText,StringFormat='Show {0}'}"
                 Command="{Binding ToggleFilter}"/>
-        <ListView Grid.Row="1"
+
+        <ListView Grid.Row="1" HasUnevenRows="True"
                   RowHeight="70" x:Name="ItemsListView"
                   SelectedItem="{Binding SelectedItem}"
+                  ItemSelected="ItemsListView_ItemSelected"
                   ItemsSource="{Binding Items}">
             <ListView.ItemTemplate>
                 <DataTemplate>
