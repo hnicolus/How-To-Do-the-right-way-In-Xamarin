@@ -4,26 +4,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using ToDo.Models;
+using ToDo.Persistence;
+using Xamarin.Forms;
 
 namespace ToDo.Repositories
 {
+
+    public static class TodoItemRepositoryEvents
+    {
+        public static string OnItemAdded = "onItemAdded";
+        public static string OnItemUpdated = "onItemUpdated";
+        public static string onItemDeleted = "onItemDeleted";
+    }
     public class TodoItemRepository:ITodoItemRepository
     {
 
         private SQLiteAsyncConnection _connection;
-
-        public event EventHandler<TodoItem> OnItemAdded;
-        public event EventHandler<TodoItem> OnItemUpdated;
-        public event EventHandler<TodoItem> OnItemDelete;
+       
+     
 
         private async Task CreateConnectionAsync()
         {
-            if (_connection != null)
-                return;
-            var documentPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            var databasePath = Path.Combine(documentPath, "TodoItems.sqlite");
+            if (_connection != null) return;
 
-            _connection = new SQLiteAsyncConnection(databasePath);
+            _connection = DependencyService.Get<ISQLiteDb>().GetConnection();
             await _connection.CreateTableAsync<TodoItem>().ConfigureAwait(false);
 
             if (await _connection.Table<TodoItem>().CountAsync().ConfigureAwait(false) == 0)
@@ -39,8 +43,7 @@ namespace ToDo.Repositories
             await CreateConnectionAsync().ConfigureAwait(false);
             
             await _connection.InsertAsync(item).ConfigureAwait(false);
-            
-            OnItemAdded?.Invoke(this, item);
+            MessagingCenter.Send(this, TodoItemRepositoryEvents.OnItemAdded, item);
         }
 
         public async Task AddOrUpdateAsync(TodoItem item)
@@ -63,8 +66,7 @@ namespace ToDo.Repositories
             await CreateConnectionAsync().ConfigureAwait(false);
            
             await _connection.UpdateAsync(item).ConfigureAwait(false);
-            
-            OnItemUpdated?.Invoke(this, item);
+            MessagingCenter.Send(this, TodoItemRepositoryEvents.OnItemUpdated, item);
         }
 
         public async Task DeleteAsync(int id)
@@ -74,8 +76,8 @@ namespace ToDo.Repositories
             var item = await _connection.GetAsync<TodoItem>(id).ConfigureAwait(false);
             
             await _connection.DeleteAsync<TodoItem>(item).ConfigureAwait(false);
-            
-            OnItemDelete?.Invoke(this, item);
+
+            MessagingCenter.Send(this, TodoItemRepositoryEvents.onItemDeleted, item);
         }
     }
 }

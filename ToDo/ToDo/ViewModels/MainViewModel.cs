@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -10,6 +8,7 @@ using ToDo.Repositories;
 using ToDo.Views;
 using System.Collections.ObjectModel;
 using ToDo.Models;
+using Xamarin.Essentials;
 
 namespace ToDo.ViewModels
 {
@@ -20,7 +19,10 @@ namespace ToDo.ViewModels
         public ICommand AddItem => new Command(async () =>
         {
             var itemView = Resolver.Resolve<ItemView>();
-            await Navigation.PushAsync(itemView).ConfigureAwait(false);
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+             Navigation.PushAsync(itemView).ConfigureAwait(false)
+            );
         });
 
         public string FilterText => ShowAll ? "All" : "Active";
@@ -38,7 +40,8 @@ namespace ToDo.ViewModels
             }
             set
             {
-                Device.BeginInvokeOnMainThread(async () => await NavigateToItemAsync(value).ConfigureAwait(false));
+                Device.BeginInvokeOnMainThread(async () =>
+                    await NavigateToItemAsync(value).ConfigureAwait(false));
                 RaisePropertyChanged(nameof(SelectedItem));
             }
         }
@@ -61,15 +64,22 @@ namespace ToDo.ViewModels
         {
 
             //Added the new item to the view list
-            repository.OnItemAdded += (sender, item) =>
-                Items.Add(CreateTodoItemViewModel(item));
 
-            repository.OnItemUpdated += (sender, item) =>
-                Task.Run(async () => await LoadDataAsync().ConfigureAwait(false));
 
-            repository.OnItemDelete += (sender, item) => 
-                Task.Run(async () => await LoadDataAsync().ConfigureAwait(false));
+            MessagingCenter.Subscribe<ITodoItemRepository, TodoItem>
+                (this, TodoItemRepositoryEvents.OnItemAdded, async (sender, args) =>
+                Items.Add(CreateTodoItemViewModel(args))
+            );
 
+            MessagingCenter.Subscribe<TodoItemRepository, TodoItem>
+            (this, TodoItemRepositoryEvents.OnItemUpdated, async (sender, args) =>
+                await LoadDataAsync().ConfigureAwait(false)
+            );
+
+            MessagingCenter.Subscribe<ITodoItemRepository, TodoItem>
+            (this, TodoItemRepositoryEvents.onItemDeleted, async (sender, args) =>
+                await LoadDataAsync().ConfigureAwait(false)
+            );
 
             _repository = repository;
             Task.Run(async () => await LoadDataAsync().ConfigureAwait(false));
@@ -97,14 +107,15 @@ namespace ToDo.ViewModels
 
         private void ItemStatusChanged(object sender, EventArgs e)
         {
-            if(sender is TodoItemViewModel item)
+            if (sender is TodoItemViewModel item)
             {
-                if(!ShowAll && item.Item.Completed)
+                if (!ShowAll && item.Item.Completed)
                 {
                     Items.Remove(item);
                 }
                 Task.Run(() => _repository.UpdateItemAsync(item.Item));
             }
         }
+
     }
 }

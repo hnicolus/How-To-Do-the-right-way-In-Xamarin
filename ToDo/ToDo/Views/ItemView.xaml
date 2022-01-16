@@ -3,16 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:ToDo.ViewModels"
              mc:Ignorable="d"
+             x:DataType="viewmodels:ItemViewModel"
              x:Class="ToDo.Views.ItemView" Title="New todo item">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" Command="{Binding Save}"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout Padding="14">
+    <StackLayout Padding="14" >
         <Label Text="Title"/>
         <Entry Text="{Binding Item.Title}"/>
-
+        <Editor VerticalOptions="FillAndExpand"
+            Text="{Binding Item.Description}"
+            />
         <Label Text="Due" />
         <DatePicker  Date="{Binding Item.Due}"/>
         <StackLayout Orientation="Horizontal">

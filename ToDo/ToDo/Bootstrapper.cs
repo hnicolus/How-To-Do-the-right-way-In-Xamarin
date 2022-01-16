@@ -1,11 +1,6 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ToDo.Repositories;
 using ToDo.ViewModels;
 using Xamarin.Forms;
@@ -32,6 +27,7 @@ namespace ToDo
             }
 
             ContainerBuilder.RegisterType<TodoItemRepository>().SingleInstance();
+          
         }
         protected virtual void FinishInitialization()
         {

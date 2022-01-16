@@ -10,15 +10,18 @@
            
             <Color x:Key="CompletedColor">#1C8859</Color>
             <Color x:Key="ActiveColor">#D3D3D3</Color>
-
+            <Color x:Key="PrimaryColor">#000</Color>
             <Color x:Key="ItemBackgroundColor">#191932</Color>
             <Color x:Key="DarkBackgroundColor">#0101E</Color>
             <Color x:Key="LightBlueColor">#565BFF</Color>
-
+            <Color x:Key="OrangeColor">#FF8000</Color>
             <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource LightBlueColor}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource OrangeColor}"/>
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

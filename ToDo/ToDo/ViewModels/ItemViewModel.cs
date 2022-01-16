@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ToDo.Models;
 using ToDo.Repositories;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ToDo.ViewModels
@@ -26,7 +27,9 @@ namespace ToDo.ViewModels
         public ICommand Save => new Command(async () =>
         {
             await _repository.AddOrUpdateAsync(Item).ConfigureAwait(false);
-            await Navigation.PopAsync().ConfigureAwait(false);
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+                Navigation.PopAsync().ConfigureAwait(false));
         });
     }
 }

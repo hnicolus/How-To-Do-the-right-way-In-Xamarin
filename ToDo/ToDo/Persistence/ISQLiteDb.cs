@@ -9,7 +9,7 @@ namespace ToDo.Persistence
 {
     public interface ISQLiteDb
     {
-        SQLiteConnection GetConnection();
+        SQLiteAsyncConnection GetConnection();
 
     }
 }

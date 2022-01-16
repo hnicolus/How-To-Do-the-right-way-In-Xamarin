@@ -20,12 +20,12 @@ namespace ToDo.Droid.Persistence
 {
     class SQLiteDb : ISQLiteDb
     {
-        public SQLiteConnection GetConnection()
+        public SQLiteAsyncConnection GetConnection()
         {
             var documentPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
             var path = Path.Combine(documentPath, "Tododb.db3");
 
-            return new SQLiteConnection(path);
+            return new SQLiteAsyncConnection(path);
         }
     }
 }
